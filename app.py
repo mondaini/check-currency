@@ -32,12 +32,10 @@ slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, "/slack/events", 
 @slack_events_adapter.on("message")
 def mention(event_data):
     data = quote()
-    req_body = request.body
-
     data.get("rates").get("BRL")
     message = event_data["event"]
 
-    if message.get("subtype") is None and "Dólar" in message.get('text'):
+    if message.get("subtype") is None:
         channel = message["channel"]
         message = ":money: %s" % data.get("rates").get("BRL")
         slack_client.chat_postMessage(channel=channel, text=message)
