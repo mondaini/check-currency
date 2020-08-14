@@ -34,8 +34,9 @@ def mention(event_data):
     data = quote()
     data.get("rates").get("BRL")
     message = event_data["event"]
+    rate = data.get("rates").get("BRL")
 
     if message.get("subtype") is None and "Dólar" in message.get('text'):
         channel = message["channel"]
-        message = ":money: %s" % data.get("rates").get("BRL")
+        message = ":money_with_wings: %s" % rate
         slack_client.chat_postMessage(channel=channel, text=message)
