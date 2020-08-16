@@ -14,16 +14,24 @@ app = Flask(__name__)
 slack_client = WebClient(SLACK_BOT_TOKEN)
 slack_events_adapter = SlackEventAdapter(SLACK_SIGNING_SECRET, "/slack/events", app)
 
+MESSAGE = """:dollar::dollar::dollar:
+
+:flag-br: = {:.2f}
+:husky: = {:.2f} (2,5%)
+"""
+
+
 @slack_events_adapter.on("message")
 def mention(event_data):
-    data = quote()
-    data.get("rates").get("BRL")
     message = event_data["event"]
 
     rate = Decimal(data.get("rates").get("BRL"))
     husky = rate * Decimal(0.975)
 
     if message.get("subtype") is None and "dólar" in message.get('text'):
+        data = quote()
+        data.get("rates").get("BRL")
+
         channel = message["channel"]
-        message = ":money_with_wings::money_with_wings::money_with_wings:\nR$ {:.2f}\n:husky: {:.2f} ".format(rate, husky)
+        message = MESSAGE.format(rate, husky)
         slack_client.chat_postMessage(channel=channel, text=message)
