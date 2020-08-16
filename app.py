@@ -9,7 +9,7 @@ from decimal import Decimal
 EXCHANGE_API_KEY = getenv('EXCHANGE_API_KEY')
 SLACK_SIGNING_SECRET = getenv('SLACK_SIGNING_SECRET')
 SLACK_BOT_TOKEN = getenv("SLACK_BOT_TOKEN")
-MESSAGE = """:dollar::dollar::dollar:
+MESSAGE_TEMPLATE = """:dollar::dollar::dollar:
 
 :flag-br: = {:.2f}
 :husky: = {:.2f} (2,5%)
@@ -40,5 +40,5 @@ def mention(event_data):
         husky = rate * Decimal(0.975)
 
         channel = message["channel"]
-        message = MESSAGE.format(rate, husky)
+        message = MESSAGE_TEMPLATE.format(rate, husky)
         slack_client.chat_postMessage(channel=channel, text=message)
