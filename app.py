@@ -25,12 +25,13 @@ MESSAGE = """:dollar::dollar::dollar:
 def mention(event_data):
     message = event_data["event"]
 
-    rate = Decimal(data.get("rates").get("BRL"))
-    husky = rate * Decimal(0.975)
 
     if message.get("subtype") is None and "dólar" in message.get('text'):
         data = quote()
         data.get("rates").get("BRL")
+
+        rate = Decimal(data.get("rates").get("BRL"))
+        husky = rate * Decimal(0.975)
 
         channel = message["channel"]
         message = MESSAGE.format(rate, husky)
